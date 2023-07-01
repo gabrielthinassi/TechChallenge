@@ -22,7 +22,7 @@ public partial class DbtechChallengeContext : DbContext
                 .HasKey(e => e.Id);
 
             entity.Property(e => e.AvatarUrl)
-                .HasMaxLength(50)
+                .HasMaxLength(150)
                 .IsUnicode(false);
             entity.Property(e => e.Email)
                 .HasMaxLength(50)

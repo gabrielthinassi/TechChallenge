@@ -31,6 +31,10 @@ namespace TechChallenge.Controllers
                 return BadRequest();
             } else
             {
+                var uploadService = new FileUpload();
+                var avatarUrl = user.AvatarUrl != "" ? uploadService.UploadBase64Image(user.AvatarUrl) : "";
+                user.AvatarUrl = avatarUrl;
+
                 _dbContext.Users.Add(user);
                 _dbContext.SaveChanges();
                 return Ok(user);

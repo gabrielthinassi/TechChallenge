@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 
 const AddUser = () => {
-    const [user, setUser] = useState({ name: '', email: '', avatarUrl: '' });
-    const [avatar, setAvatar] = useState('');
+    const [user, setUser] = useState({ name: '', email: '', AvatarUrl: '' });
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -29,12 +28,14 @@ const AddUser = () => {
         setUser({ name: '', email: '', avatarUrl: '' });
     }
 
-    const handleAvatarChange = async (event) => {
+    const handleAvatarChange = (event) => {
         const file = event.target.files[0];
-        const blobName = file.name;
 
-        setAvatar(file)
-        setUser({ ...user, avatarUrl: blobName })
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setUser({ ...user, AvatarUrl: reader.result })
+        };
+        reader.readAsDataURL(file);
     };
 
     return (
