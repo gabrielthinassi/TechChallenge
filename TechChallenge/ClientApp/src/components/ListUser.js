@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Media } from 'reactstrap';
 
 const ListUser = () => {
     const [users, setUsers] = useState([]);
@@ -18,21 +19,18 @@ const ListUser = () => {
                     <button className="btn btn-primary">Novo Usuario</button>
                 </Link>
                 <table className='table table-striped' aria-labelledby="tabelLabel">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>AvatarUrl</th>
-                        </tr>
-                    </thead>
                     <tbody>
                         {users.map(user =>
                             <tr key={user.Id}>
-                                <td>{user.id}</td>
-                                <td>{user.name}</td>
-                                <td>{user.email}</td>
-                                <td>{user.avatarUrl}</td>
+                                <td>
+                                    <div className="d-flex align-items-center">
+                                        <img src={user.avatarUrl} alt="Avatar" className="avatar-img mr-3" />
+                                        <div>
+                                            <h5>{user.name}</h5>
+                                            <p>{user.email}</p>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         )}
                     </tbody>
