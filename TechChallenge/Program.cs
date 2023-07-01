@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TechChallenge.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,7 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<DbtechChallengeContext>();
+
+builder.Services.AddDbContext<DbtechChallengeContext>(
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection")));
 
 var app = builder.Build();
 

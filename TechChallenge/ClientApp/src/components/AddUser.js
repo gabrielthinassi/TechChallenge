@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
-/*import { BlobServiceClient } from "@azure/storage-blob";*/
-import { BlobServiceClient } from "azure-storage";
 
 const AddUser = () => {
     const [user, setUser] = useState({ name: '', email: '', avatarUrl: '' });
     const [avatar, setAvatar] = useState('');
-
-    const blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=techchallengestore;AccountKey=XXzmzS4UzjJCNuqIwRiQ6eqqsQ0umKNUYAaiuCi92F36eIfYEB09mIFamJBc4R2aW6y7wa6pXkft+AStG5UNvw==;EndpointSuffix=core.windows.net");
-    const containerClient = blobServiceClient.getContainerClient("userimages");
-
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -38,14 +32,6 @@ const AddUser = () => {
     const handleAvatarChange = async (event) => {
         const file = event.target.files[0];
         const blobName = file.name;
-
-        const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-        try {
-            await blockBlobClient.uploadBrowserData(file);
-            console.log("Imagem enviada com sucesso!");
-        } catch (error) {
-            console.error("Erro ao enviar a imagem:", error);
-        }
 
         setAvatar(file)
         setUser({ ...user, avatarUrl: blobName })

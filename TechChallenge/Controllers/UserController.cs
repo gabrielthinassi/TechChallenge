@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TechChallenge.Models;
+using TechChallenge.Services;
 
 namespace TechChallenge.Controllers
 {
@@ -34,6 +35,19 @@ namespace TechChallenge.Controllers
                 _dbContext.SaveChanges();
                 return Ok(user);
             }
+        }
+
+        [HttpPost]
+        [Route("uploadavatar")]
+        public string PostFile([FromBody] UploadImageCommand command)
+        {
+            var uploadService = new FileUpload();
+            return uploadService.UploadBase64Image(command.Image);
+        }
+
+        public class UploadImageCommand
+        {
+            public string Image { get; set; }
         }
     }
 }
