@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Media } from 'reactstrap';
 
 const ListUser = () => {
     const [users, setUsers] = useState([]);

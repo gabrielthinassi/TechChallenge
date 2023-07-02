@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
+import ToastAlert from './ToastAlert'
+import { useNavigate } from 'react-router-dom';
 
 const AddUser = () => {
     const [user, setUser] = useState({ name: '', email: '', AvatarUrl: '' });
+    const [showToast, setShowToast] = useState({ icon: '', title: '', message: '', isOpen: false });
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -17,15 +21,15 @@ const AddUser = () => {
             });
 
             if (response.ok) {
-                console.log('Usuario adicionado com sucesso!');
+                setShowToast({ ...showToast, icon: 'success', title: 'Sucesso!', message: 'Usuario cadastrado com sucesso!', isOpen: true});
             } else {
-                console.error('Erro ao adicionar o usuario.');
+                setShowToast({ ...showToast, icon: 'danger', title: 'Falha!', message: 'Falha ao cadastrar usuario!', isOpen: true });
             }
         } catch (error) {
-            console.error('Erro ao fazer a requisicao:', error);
+            setShowToast({ ...showToast, icon: 'danger', title: 'Erro!', message: 'Erro ao fazer a requisicao!', isOpen: true });
+        } finally {
+            setUser({ name: '', email: '', avatarUrl: '' });
         }
-
-        setUser({ name: '', email: '', avatarUrl: '' });
     }
 
     const handleAvatarChange = (event) => {
@@ -39,43 +43,49 @@ const AddUser = () => {
     };
 
     return (
-        <Form onSubmit={handleSubmit}>
-            <FormGroup>
-                <Label>Nome</Label>
-                <Input
-                    type="text"
-                    name="name"
-                    placeholder="Digite o nome..."
-                    value={user.name}
-                    onChange={(event) => setUser({ ...user, name: event.target.value })}
-                />
-            </FormGroup>
+        <div>
+            <ToastAlert icon={showToast.icon} title={showToast.title} message={showToast.message} isOpen={showToast.isOpen} />
+            <Form onSubmit={handleSubmit}>
+                <FormGroup>
+                    <Label>Nome</Label>
+                    <Input
+                        required
+                        type="text"
+                        name="name"
+                        placeholder="Digite o nome..."
+                        value={user.name}
+                        onChange={(event) => setUser({ ...user, name: event.target.value })}
+                    />
+                </FormGroup>
 
-            <FormGroup>
-                <Label>Email</Label>
-                <Input
-                    type="text"
-                    name="email"
-                    placeholder="Digite o email..."
-                    value={user.email}
-                    onChange={(event) => setUser({ ...user, email: event.target.value })}
-                />
-            </FormGroup>
+                <FormGroup>
+                    <Label>Email</Label>
+                    <Input
+                        required
+                        type="text"
+                        name="email"
+                        placeholder="Digite o email..."
+                        value={user.email}
+                        onChange={(event) => setUser({ ...user, email: event.target.value })}
+                    />
+                </FormGroup>
 
-            <FormGroup>
-                <Label>Avatar</Label>
-                <Input
-                    type="file"
-                    name="avatar"
-                    accept="image/*"
-                    onChange={handleAvatarChange}
-                />
-            </FormGroup>
+                <FormGroup>
+                    <Label>Avatar</Label>
+                    <Input
+                        required
+                        type="file"
+                        name="avatar"
+                        accept="image/*"
+                        onChange={handleAvatarChange}
+                    />
+                </FormGroup>
 
-            <Button variant="primary" type="submit">
-                Adicionar Usuario
-            </Button>
-        </Form>
+                <Button color="primary" type="submit">
+                    Adicionar Usuario
+                </Button>
+            </Form>
+        </div>
     );
 
 }
